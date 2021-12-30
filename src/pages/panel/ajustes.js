@@ -6,5 +6,6 @@ const Settings = () => {
 };
 
 Settings.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Settings.authRequired = true;
 
 export default Settings;

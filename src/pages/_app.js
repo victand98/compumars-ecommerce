@@ -1,5 +1,14 @@
 import Head from "next/head";
+import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import store from "lib/app/store";
 import "../styles/globals.css";
+import "react-toastify/dist/ReactToastify.css";
+import { Auth } from "components";
+
+let persistor = persistStore(store);
 
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
@@ -34,7 +43,30 @@ export default function MyApp({ Component, pageProps }) {
         <link rel="apple-touch-icon" href="/apple-icon.png"></link>
         <meta name="theme-color" content="#317EFB" />
       </Head>
-      {getLayout(<Component {...pageProps} />)}
+
+      <Provider store={store}>
+        <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+          {/* {getLayout(<Component {...pageProps} />)} */}
+          {Component.authRequired ? (
+            <Auth>{getLayout(<Component {...pageProps} />)}</Auth>
+          ) : (
+            getLayout(<Component {...pageProps} />)
+          )}
+        </PersistGate>
+      </Provider>
+
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </>
   );
 }

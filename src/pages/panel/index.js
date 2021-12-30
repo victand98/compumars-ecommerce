@@ -6,5 +6,6 @@ const Home = () => {
 };
 
 Home.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Home.authRequired = true;
 
 export default Home;
