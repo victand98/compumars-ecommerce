@@ -5,6 +5,7 @@ import {
   KeyIcon,
   UserIcon,
 } from "@heroicons/react/solid";
+import { RESOURCES } from "lib/helpers/constants";
 
 // Dashboard routes
 export const dashboardRoutes = [
@@ -17,16 +18,28 @@ export const dashboardRoutes = [
         name: "Calendario",
         icon: CalendarIcon,
         layout: "/panel",
+        resource: RESOURCES.USERS,
       },
       {
-        pathGroup: "/productos",
-        name: "Productos",
+        pathGroup: "/catalogo",
+        name: "Catálogo",
         icon: CubeIcon,
         layout: "/panel",
         subitems: [
-          { path: "", name: "Lista" },
-          { path: "/nuevo", name: "Registrar" },
-          { path: "/eliminados", name: "Eliminados" },
+          { path: "", name: "Productos", resource: RESOURCES.PRODUCTS },
+          {
+            path: "/categorias",
+            name: "Categorias",
+            resource: RESOURCES.USERS,
+          },
+          { path: "/atributos", name: "Atributos", resource: RESOURCES.USERS },
+          { path: "/marcas", name: "Marcas", resource: RESOURCES.USERS },
+          {
+            path: "/descuentos",
+            name: "Descuentos",
+            resource: RESOURCES.USERS,
+          },
+          { path: "/stock", name: "Stock", resource: RESOURCES.USERS },
         ],
       },
     ],
@@ -34,8 +47,20 @@ export const dashboardRoutes = [
   {
     section: "Configuración",
     items: [
-      { path: "/ajustes", name: "Ajustes", icon: KeyIcon, layout: "/panel" },
-      { path: "/perfil", name: "Perfil", icon: UserIcon, layout: "/panel" },
+      {
+        path: "/ajustes",
+        name: "Ajustes",
+        icon: KeyIcon,
+        layout: "/panel",
+        resource: RESOURCES.USERS,
+      },
+      {
+        path: "/perfil",
+        name: "Perfil",
+        icon: UserIcon,
+        layout: "/panel",
+        resource: RESOURCES.USERS,
+      },
     ],
   },
 ];

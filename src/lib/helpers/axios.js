@@ -4,7 +4,6 @@ import { API_COMPUMARS_URI, LOCAL_STORAGE_ITEMS } from "lib/helpers/constants";
 import store from "lib/app/store";
 import { logout } from "lib/features/auth/authSlice";
 import { toast } from "react-toastify";
-const { dispatch } = store;
 
 // Set config defaults when creating the instance
 const instance = axios.create({
@@ -46,8 +45,7 @@ const errorHandler = async (error) => {
     // Terminate user session because the server gave a 401 status code
     if (status === 401) {
       toast.error(data.message);
-      dispatch(logout());
-      localStorage.clear();
+      store.dispatch(logout());
     }
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx

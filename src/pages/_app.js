@@ -1,14 +1,11 @@
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
-import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
-import store from "lib/app/store";
+import store, { persistor } from "lib/app/store";
+import { Auth, AuthorizationProvider } from "components";
 import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import { Auth } from "components";
-
-let persistor = persistStore(store);
 
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
@@ -46,12 +43,15 @@ export default function MyApp({ Component, pageProps }) {
 
       <Provider store={store}>
         <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
-          {/* {getLayout(<Component {...pageProps} />)} */}
-          {Component.authRequired ? (
-            <Auth>{getLayout(<Component {...pageProps} />)}</Auth>
-          ) : (
-            getLayout(<Component {...pageProps} />)
-          )}
+          <AuthorizationProvider>
+            {Component.auth ? (
+              <Auth roles={Component.auth.roles}>
+                {getLayout(<Component {...pageProps} />)}
+              </Auth>
+            ) : (
+              getLayout(<Component {...pageProps} />)
+            )}
+          </AuthorizationProvider>
         </PersistGate>
       </Provider>
 

@@ -7,8 +7,12 @@ import {
   UserIcon,
 } from "@heroicons/react/solid";
 import { Dropdown, Link } from "components";
+import { useAppDispatch } from "lib/app/hooks";
+import { logout } from "lib/features/auth/authSlice";
 
 export const UserDropdown = () => {
+  const dispatch = useAppDispatch();
+
   return (
     <Dropdown button={UserDropdownButton}>
       <div className="py-1">
@@ -58,6 +62,7 @@ export const UserDropdown = () => {
                 active ? "bg-gray-100 text-gray-900" : "text-gray-700"
               } group flex items-center w-full px-2 py-2 text-sm`}
               href="/"
+              onClick={(e) => dispatch(logout())}
             >
               <LogoutIcon className="w-5 h-5 mr-2" />
               Salir

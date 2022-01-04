@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useAppDispatch } from "lib/app/hooks";
-import { login } from "lib/features/auth/authSlice";
+import { currentRole, login } from "lib/features/auth/authSlice";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -26,6 +26,7 @@ const LoginForm = () => {
         data.refreshToken
       );
       dispatch(login(data.user));
+      dispatch(currentRole());
       const returnUrl = router.query.returnUrl || "/panel";
       router.push(returnUrl);
     } catch (error) {

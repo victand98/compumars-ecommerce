@@ -16,6 +16,8 @@ const AuthService = {
     localStorage.setItem(LOCAL_STORAGE_ITEMS.REFRESH_TOKEN, data.refreshToken);
     return data.accessToken;
   },
+
+  currentRole: () => axios.get("auth/current/role"),
 };
 
 export default AuthService;
