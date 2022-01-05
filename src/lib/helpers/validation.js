@@ -7,6 +7,7 @@ yup.setLocale({
     notType: "El valor no es válido.",
   },
   string: {
+    required: "dsadsad",
     min: "Escriba al menos ${min} caracter(es).",
     max: "Escriba no más de ${max} caracter(es).",
     email: "El correo ingresado no es válido.",
@@ -23,6 +24,20 @@ yup.setLocale({
   array: {
     min: "El campo debe tener al menos ${min} elemento(s).",
   },
+});
+
+yup.addMethod(yup.string, "lettersOnly", function (errorMessage) {
+  return this.test(`test-letters-only`, errorMessage, function (value) {
+    const { path, createError } = this;
+
+    return (
+      /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(value) ||
+      createError({
+        path,
+        message: errorMessage || "Se debe usar unicamente letras.",
+      })
+    );
+  });
 });
 
 export default yup;

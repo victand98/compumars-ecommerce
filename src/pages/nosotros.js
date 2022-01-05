@@ -1,7 +1,7 @@
 import React from "react";
 
-const Nosotros = () => {
+const AboutUs = () => {
   return <div>Nosotros without any layout</div>;
 };
 
-export default Nosotros;
+export default AboutUs;

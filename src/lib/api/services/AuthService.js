@@ -5,6 +5,8 @@ const AuthService = {
   login: ({ email, password }) =>
     axios.post("/auth/login", { email, password }),
 
+  register: (data) => axios.post("/auth/register", data),
+
   refreshToken: async () => {
     const REFRESH_TOKEN = localStorage.getItem(
       LOCAL_STORAGE_ITEMS.REFRESH_TOKEN
@@ -18,6 +20,14 @@ const AuthService = {
   },
 
   currentRole: () => axios.get("auth/current/role"),
+
+  logout: async (token, user) => {
+    try {
+      await axios.post("auth/logout", { token, user });
+    } catch (error) {
+      console.error(error);
+    }
+  },
 };
 
 export default AuthService;

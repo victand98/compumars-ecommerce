@@ -1,1 +1,1 @@
-export { default as loginSchema } from "./loginSchema";
+export * from "./authSchema";

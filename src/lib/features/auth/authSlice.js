@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AuthService } from "lib/api/services";
-import { ROLES } from "lib/helpers/constants";
+import { LOCAL_STORAGE_ITEMS, ROLES } from "lib/helpers/constants";
 
 export const currentRole = createAsyncThunk("auth/currentRole", async () => {
   const res = await AuthService.currentRole();
@@ -48,6 +48,10 @@ const authSlice = createSlice({
 });
 
 export const logout = () => (dispatch, getState) => {
+  const currentUserId = getState().auth.currentUser.id;
+  const refreshToken = localStorage.getItem(LOCAL_STORAGE_ITEMS.REFRESH_TOKEN);
+  if (refreshToken && currentUserId)
+    AuthService.logout(refreshToken, currentUserId);
   localStorage.clear();
   dispatch(authSlice.actions.logout());
 };

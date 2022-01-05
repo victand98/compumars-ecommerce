@@ -9,13 +9,18 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useAppDispatch } from "lib/app/hooks";
 import { currentRole, login } from "lib/features/auth/authSlice";
+import { FormInput, IconButton } from "components";
 
 const LoginForm = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const resolver = useYupValidationResolver(loginSchema);
   const methods = useForm({ resolver });
-  const { handleSubmit, register } = methods;
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting },
+  } = methods;
 
   const onSubmit = async (formData) => {
     try {
@@ -27,7 +32,7 @@ const LoginForm = () => {
       );
       dispatch(login(data.user));
       dispatch(currentRole());
-      const returnUrl = router.query.returnUrl || "/panel";
+      const returnUrl = router.query.returnUrl || "/perfil";
       router.push(returnUrl);
     } catch (error) {
       toast.error(error.message);
@@ -41,33 +46,29 @@ const LoginForm = () => {
       noValidate
     >
       <input type="hidden" name="remember" defaultValue="true" />
+
       <div className="rounded-md shadow-sm -space-y-px">
         <div>
-          <label htmlFor="email-address" className="sr-only">
-            Email address
-          </label>
-          <input
-            id="email-address"
-            {...register("email")}
+          <FormInput
+            id="email"
             type="email"
-            autoComplete="email"
-            required
-            className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Email address"
+            name="email"
+            placeholder="Correo Electrónico"
+            className="mb-2"
+            register={register}
+            errors={errors}
           />
         </div>
+
         <div>
-          <label htmlFor="password" className="sr-only">
-            Password
-          </label>
-          <input
+          <FormInput
             id="password"
-            {...register("password")}
             type="password"
-            autoComplete="current-password"
-            required
-            className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-            placeholder="Password"
+            name="password"
+            placeholder="Contraseña"
+            className="mb-2"
+            register={register}
+            errors={errors}
           />
         </div>
       </div>
@@ -84,7 +85,7 @@ const LoginForm = () => {
             htmlFor="remember-me"
             className="ml-2 block text-sm text-gray-900"
           >
-            Remember me
+            Recuerdame
           </label>
         </div>
 
@@ -93,24 +94,15 @@ const LoginForm = () => {
             href="#"
             className="font-medium text-indigo-600 hover:text-indigo-500"
           >
-            Forgot your password?
+            ¿Olvidaste tu contraseña?
           </a>
         </div>
       </div>
 
       <div>
-        <button
-          type="submit"
-          className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-            <LockClosedIcon
-              className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-              aria-hidden="true"
-            />
-          </span>
-          Sign in
-        </button>
+        <IconButton type="submit" icon={LockClosedIcon} disabled={isSubmitting}>
+          Iniciar Sesión
+        </IconButton>
       </div>
     </form>
   );

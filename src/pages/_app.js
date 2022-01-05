@@ -22,7 +22,7 @@ export default function MyApp({ Component, pageProps }) {
         />
         <meta name="description" content="Description" />
         <meta name="keywords" content="Keywords" />
-        <title>Next.js PWA Example</title>
+        <title>Compumars</title>
 
         <link rel="manifest" href="/manifest.json" />
         <link
@@ -56,6 +56,7 @@ export default function MyApp({ Component, pageProps }) {
       </Provider>
 
       <ToastContainer
+        bodyClassName={() => "flex text-sm font-medium p-3"}
         position="top-center"
         autoClose={5000}
         hideProgressBar={false}

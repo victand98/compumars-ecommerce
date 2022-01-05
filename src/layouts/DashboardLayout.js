@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AdminNavbar, Sidebar } from "components";
 import { dashboardRoutes } from "./routes";
 
-export const DashboardLayout = ({ children, ...rest }) => {
+const DashboardLayout = ({ children, ...rest }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -25,3 +25,5 @@ export const DashboardLayout = ({ children, ...rest }) => {
     </div>
   );
 };
+
+export default DashboardLayout;

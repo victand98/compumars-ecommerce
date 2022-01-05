@@ -3,6 +3,7 @@ const plugin = require("tailwindcss/plugin");
 module.exports = {
   mode: "jit",
   purge: [
+    "./public/**/*.html",
     "./src/pages/**/*.{js,jsx,ts,tsx}",
     "./src/components/**/*.{js,jsx,ts,tsx}",
     "./src/layouts/**/*.{js,jsx,ts,tsx}",
