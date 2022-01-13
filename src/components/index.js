@@ -1,3 +1,4 @@
+export * from "./Alert";
 export * from "./Auth";
 export * from "./Button";
 export * from "./Dropdown";

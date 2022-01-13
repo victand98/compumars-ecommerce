@@ -1,15 +1,13 @@
-import React from "react";
-import { ArrowNarrowRightIcon } from "@heroicons/react/solid";
+import React, { useState } from "react";
+import { ArrowNarrowRightIcon, CogIcon } from "@heroicons/react/solid";
 import { AuthService } from "lib/api/services";
 import { signUpSchema } from "lib/helpers/schemas";
 import { useYupValidationResolver } from "lib/hooks";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
-import { FormInput, IconButton, Link } from "components";
+import { Alert, FormInput, IconButton, Link } from "components";
 
 const SignUpForm = () => {
-  const router = useRouter();
   const resolver = useYupValidationResolver(signUpSchema);
   const methods = useForm({ resolver });
   const {
@@ -18,19 +16,33 @@ const SignUpForm = () => {
     setError,
     formState: { errors, isSubmitting },
   } = methods;
+  const [alertContent, setAlertContent] = useState({
+    type: "",
+    message: "",
+  });
 
   const onSubmit = async (formData) => {
     try {
       const { data } = await AuthService.register(formData);
       console.log(`DATA`, data);
-      toast.success(data.message);
-      router.push("/ingresar");
+      toast.success(data.message, { autoClose: false });
+      setAlertContent((prevState) => ({
+        ...prevState,
+        type: "info",
+        message: data.message,
+      }));
     } catch (error) {
-      setError(
-        error.additionalInfo.fields[0],
-        { message: error.message },
-        { shouldFocus: true }
-      );
+      if (error.additionalInfo.fields)
+        for (const field of error.additionalInfo.fields) {
+          setError(field, { message: error.message }, { shouldFocus: true });
+        }
+
+      setAlertContent((prevState) => ({
+        ...prevState,
+        type: "danger",
+        message: error.message,
+      }));
+
       console.log(`[ERROR]`, error);
     }
   };
@@ -41,6 +53,12 @@ const SignUpForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       noValidate
     >
+      {alertContent.message && (
+        <Alert color={alertContent.type} icon={CogIcon}>
+          {alertContent.message}
+        </Alert>
+      )}
+
       <div className="rounded-md shadow-sm -space-y-px">
         <div>
           <FormInput
